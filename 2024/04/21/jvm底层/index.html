@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>jvm底层原理 | 欢迎回来</title><meta name="author" content="一日三餐"><meta name="copyright" content="一日三餐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="jvm 如何管理空间？ 运行时数据区域 独享 pc：一个非常小的内存空间，用来保存程序执行到的位置（线程私有），它可以看作是当前线程所执行的字节码的行号指示器  虚拟机栈：栈内存主要是存放一些基本类型的变量和对象的引用变量。最典型的就是我们new一个对象时，对象名作为变量就存放在栈内存中栈内存有一个很重要的特殊性——在栈中的数据可以共享（已存在的值不会再次创建）int a &#x3D; 3;in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm底层原理">
+<meta property="og:url" content="http://example.com/2024/04/21/jvm%E5%BA%95%E5%B1%82/index.html">
+<meta property="og:site_name" content="欢迎回来">
+<meta property="og:description" content="jvm 如何管理空间？ 运行时数据区域 独享 pc：一个非常小的内存空间，用来保存程序执行到的位置（线程私有），它可以看作是当前线程所执行的字节码的行号指示器  虚拟机栈：栈内存主要是存放一些基本类型的变量和对象的引用变量。最典型的就是我们new一个对象时，对象名作为变量就存放在栈内存中栈内存有一个很重要的特殊性——在栈中的数据可以共享（已存在的值不会再次创建）int a &#x3D; 3;in">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/2.jpg">
+<meta property="article:published_time" content="2024-04-21T06:31:00.113Z">
+<meta property="article:modified_time" content="2024-04-21T07:15:28.071Z">
+<meta property="article:author" content="一日三餐">
+<meta property="article:tag" content="原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/04/21/jvm%E5%BA%95%E5%B1%82/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'jvm底层原理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-21 15:15:28'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"><link rel="alternate" href="/atom.xml" title="欢迎回来" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/yatou.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="欢迎回来"><span class="site-name">欢迎回来</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">jvm底层原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-04-21T06:31:00.113Z" title="发表于 2024-04-21 14:31:00">2024-04-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-21T07:15:28.071Z" title="更新于 2024-04-21 15:15:28">2024-04-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/jvm/">jvm</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="jvm底层原理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><ul>
+<li><h3 id="jvm-如何管理空间？"><a href="#jvm-如何管理空间？" class="headerlink" title="jvm 如何管理空间？"></a>jvm 如何管理空间？</h3><ul>
+<li><h4 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h4><ul>
+<li><h5 id="独享"><a href="#独享" class="headerlink" title="独享"></a>独享</h5><ul>
+<li><h6 id="pc："><a href="#pc：" class="headerlink" title="pc："></a>pc：</h6><p>一个非常小的内存空间，用来保存程序执行到的位置（线程私有），它可以看作是当前线程所执行的字节码的行号指示器</p>
+</li>
+<li><h6 id="虚拟机栈："><a href="#虚拟机栈：" class="headerlink" title="虚拟机栈："></a>虚拟机栈：</h6><p>栈内存主要是存放一些基本类型的变量和对象的引用变量。最典型的就是我们new一个对象时，对象名作为变量就存放在栈内存中<br>栈内存有一个很重要的特殊性——在栈中的数据可以共享（已存在的值不会再次创建）<br>int a &#x3D; 3;<br>int b &#x3D; 3；<br>(编译器先处理int a &#x3D;3；首先它会在栈中创建一个变量为a的引用，然后查找栈中是否有3这个值，如果没找到，就将3存放进来，然后将a指向3。接着处理int b)<br>每个方法执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、操作数栈、动态链接、方法出口等。局部变量表存放了编译器可知的各种基本数据类型、对象引用和returnAddress类型<br>每个方法从调用直至完成的过程，都对应着一个栈帧从入栈到出栈的过程。每当一个方法执行完成时，该栈帧就会弹出栈帧的元素作为这个方法的返回值，并且清除这个栈帧，Java栈的栈顶的栈帧就是当前正在执行的活动栈，也就是当前正在执行的方法，方法的调用过程也是由栈帧切换来产生结果。<br>在JVM规范中，对这个区域规定了两种异常情况：<br>1.如果线程请求的栈深度大于虚拟机允许的深度，将抛出StackOverflowError异常；<br>2.如果虚拟机栈可以动态扩展，在扩展时无法申请到足够的内存，就会抛出OutOfMemoryError异常。</p>
+</li>
+<li><h6 id="本地方法栈："><a href="#本地方法栈：" class="headerlink" title="本地方法栈："></a>本地方法栈：</h6><ul>
+<li>虚拟机栈为虚拟机执行Java方法（字节码）服务</li>
+<li>本地方法栈则为虚拟机使用到的Native方法服务</li>
+<li>本地方法栈也会抛出StackOverflowError和OutOfMemoryError异常。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h5 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h5><ul>
+<li><h6 id="方法区："><a href="#方法区：" class="headerlink" title="方法区："></a>方法区：</h6><p>是各个线程共享的内存区域，它用于存储class二进制文件，包含所有的class和static变量，包含了虚拟机加载的类信息、常量(常量池)、静态变量(静态域)、即时编译后的代码等数据。<br>方法区中包含的都是在整个程序中永远唯一的元素，如class，static变量。<br>被所有的线程共享，方法区包含所有的class（class是指类的原始代码，要创建一个类的对象，首先要把该类的代码加载到方法区中，并且初始化）和static变量。<br>方法区中包含的都是在整个程序中永远唯一的元素，如class，static变量。<br>常量池：在编译期间就将一部分数据存放于该区域，包含以final修饰的基本数据类型的常量值、String字符串。（在java6时它是方法区的一部分；1.7又把他放到了堆内存中；1.8之后出现了元空间，它又回到了方法区。）<br>静态域：存放类中以static声明的静态成员变量。<br>程序计数器：当前线程所执行的行号指示器。通过改变计数器的值来确定下一条指令，比如循环，分支，跳转，异常处理，线程恢复等都是依赖计数器来完成。</p>
+</li>
+<li><h6 id="堆："><a href="#堆：" class="headerlink" title="堆："></a>堆：</h6><p>通过new生成的对象都存放在堆中，对于堆中的对象生命周期的管理由Java虚拟机的垃圾回收机制GC进行回收和统一管理<br>jvm只有一个堆区(heap)，且被所有线程共享，堆中不存放基本类型和对象引用，只存放对象本身和数组本身；<br>优点是可以动态分配内存大小，缺点是由于动态分配内存导致存取速度慢。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h4 id="分配空间方式"><a href="#分配空间方式" class="headerlink" title="分配空间方式"></a>分配空间方式</h4><ul>
+<li><h5 id="指针碰撞"><a href="#指针碰撞" class="headerlink" title="指针碰撞"></a>指针碰撞</h5><p>如果jvm内存是规整的，就是一边是已使用的内存，另外一边是未使用的内存，中间是指针，jvm需要给新对象分配内存时，就会将指针往未使用的内存移动一段和新对象一样大小的距离，这样jvm就完成了<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D&spm=1001.2101.3001.7020">内存分配</a>。</p>
+</li>
+<li><h5 id="空闲列表"><a href="#空闲列表" class="headerlink" title="空闲列表"></a>空闲列表</h5><p>如果jvm内存不是规整的，已使用的，未使用的内存，都是杂乱无章的，这个时候就不可能使用指针碰撞，<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Java%E8%99%9A%E6%8B%9F%E6%9C%BA&spm=1001.2101.3001.7020">Java虚拟机</a>就会维护一个空闲列表，用来记录哪些内存是可用的，然后jvm给新对象分配内存时，就会找到一个足够大的空格，来存放对象。</p>
+<h5 id="垃圾回收器："><a href="#垃圾回收器：" class="headerlink" title="垃圾回收器："></a>垃圾回收器：</h5><p>至于jvm使用那种分配方法，是由垃圾收集器决定的，</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h3 id="jvm-中的对象是如何存在的，管理的？"><a href="#jvm-中的对象是如何存在的，管理的？" class="headerlink" title="jvm 中的对象是如何存在的，管理的？"></a>jvm 中的对象是如何存在的，管理的？</h3><ul>
+<li><h4 id="对象组成"><a href="#对象组成" class="headerlink" title="对象组成"></a>对象组成</h4><ul>
+<li><h5 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h5><ul>
+<li><h6 id="类型指针："><a href="#类型指针：" class="headerlink" title="类型指针："></a>类型指针：</h6><p>Java对象存放在堆中，但其类信息存放在方法区中，所以Klass word指向该对象的类信息。</p>
+</li>
+<li><h6 id="markword："><a href="#markword：" class="headerlink" title="markword："></a>markword：</h6><p>从上图可以看到，Mark Work存储的是对象自身运行时的数据，比如：锁标志位；是否偏向锁；GC分代年龄；对象的hashCode；获取到该锁的线程的线程ID；偏向时间戳（Epoch）等等。</p>
+</li>
+<li><h6 id="数组长度："><a href="#数组长度：" class="headerlink" title="数组长度："></a>数组长度：</h6><p>如果当前对象是数组，才有此数组长度字段。<br>如果jvm是32bit，则数组长度是32bit；如果jvm是64bit，则数组长度是64bit</p>
+</li>
+</ul>
+</li>
+<li><h5 id="实例数据"><a href="#实例数据" class="headerlink" title="实例数据"></a>实例数据</h5><p>对象的实例数据就是对象在java代码中的属性（包括父类属性以及自己的属性）和值。</p>
+</li>
+<li><h5 id="对齐填充："><a href="#对齐填充：" class="headerlink" title="对齐填充："></a>对齐填充：</h5><p>因为jvm要求<strong>Java对象占用内存的大小是8byte的倍数</strong>，因此需要把对象的大小补齐至8byte倍数。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h3 id="jvm中-如何访问一个对象？"><a href="#jvm中-如何访问一个对象？" class="headerlink" title="jvm中 如何访问一个对象？"></a>jvm中 如何访问一个对象？</h3><ul>
+<li><h4 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h4><p>使用句柄<br>  使用句柄访问对象，Java堆中会划分出一块内存作为句柄池，reference中存储的就是对象的句柄地址，句柄中包含了对象实例数据与类型数据各自的具体地址信息。 </p>
+<p><img src="https://img-blog.csdnimg.cn/20200718212015393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FuZHlhX25ldA==,size_16,color_FFFFFF,t_70" alt="img"></p>
+</li>
+<li><h4 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h4><p> 使用直接指针访问，Java堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference中存储的直接就是对象地址。（Sun HotSport VM的使用方式）</p>
+<p><img src="https://img-blog.csdnimg.cn/20200718213350176.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FuZHlhX25ldA==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h4 id="访问方式对比"><a href="#访问方式对比" class="headerlink" title="访问方式对比"></a>访问方式对比</h4><p>  使用句柄访问优势是reference中存储的是稳定的句柄地址，对象被移动时，只会改变句柄中实例数据指针，reference本身不会变；<br>  使用直接指针访问优势是速度快，节省一次指针定位时间开销。（JVM默认使用）</p>
+</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">一日三餐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/04/21/jvm%E5%BA%95%E5%B1%82/">http://example.com/2024/04/21/jvm%E5%BA%95%E5%B1%82/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">欢迎回来</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8E%9F%E7%90%86/">原理</a></div><div class="post_share"><div class="social-share" data-image="/img/2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/04/21/%E9%9D%A2%E8%AF%95/" title="合集"><img class="cover" src="/img/10.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">合集</div></div></a></div><div class="next-post pull-right"><a href="/2024/04/20/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3ThreadLocal%E5%85%B3%E9%94%AE%E5%AD%97/" title="Threadlocal关键字详解"><img class="cover" src="/img/16.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Threadlocal关键字详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/yatou.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">一日三餐</div><div class="author-info__description">我的日常积累</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>前往个人信息</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://blog.csdn.net/weixin_62647396?type=blog" target="_blank" title="CSDN"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/y_ma@siat.ac.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#jvm-%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E7%A9%BA%E9%97%B4%EF%BC%9F"><span class="toc-text">jvm 如何管理空间？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E5%9F%9F"><span class="toc-text">运行时数据区域</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8B%AC%E4%BA%AB"><span class="toc-text">独享</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#pc%EF%BC%9A"><span class="toc-text">pc：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%9A"><span class="toc-text">虚拟机栈：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%EF%BC%9A"><span class="toc-text">本地方法栈：</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB"><span class="toc-text">共享</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%9A"><span class="toc-text">方法区：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%A0%86%EF%BC%9A"><span class="toc-text">堆：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E9%85%8D%E7%A9%BA%E9%97%B4%E6%96%B9%E5%BC%8F"><span class="toc-text">分配空间方式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%A2%B0%E6%92%9E"><span class="toc-text">指针碰撞</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A9%BA%E9%97%B2%E5%88%97%E8%A1%A8"><span class="toc-text">空闲列表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%EF%BC%9A"><span class="toc-text">垃圾回收器：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jvm-%E4%B8%AD%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%9C%A8%E7%9A%84%EF%BC%8C%E7%AE%A1%E7%90%86%E7%9A%84%EF%BC%9F"><span class="toc-text">jvm 中的对象是如何存在的，管理的？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%BB%84%E6%88%90"><span class="toc-text">对象组成</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%A4%B4"><span class="toc-text">对象头</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E6%8C%87%E9%92%88%EF%BC%9A"><span class="toc-text">类型指针：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#markword%EF%BC%9A"><span class="toc-text">markword：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%EF%BC%9A"><span class="toc-text">数组长度：</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE"><span class="toc-text">实例数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90%E5%A1%AB%E5%85%85%EF%BC%9A"><span class="toc-text">对齐填充：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jvm%E4%B8%AD-%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="toc-text">jvm中 如何访问一个对象？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A5%E6%9F%84"><span class="toc-text">句柄</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%8C%87%E9%92%88"><span class="toc-text">直接指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-text">访问方式对比</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By 一日三餐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="30" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
