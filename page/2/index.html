@@ -54,7 +54,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2024-04-21 22:16:20'
+  postUpdate: '2024-04-21 22:37:34'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -152,225 +152,117 @@
       }
       detectApple()
     })(window)</script><meta name="generator" content="Hexo 7.2.0"><link rel="alternate" href="/atom.xml" title="欢迎回来" type="application/atom+xml">
-</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/yatou.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s2.loli.net/2024/04/21/M9qDXPUflRcbKAw.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="欢迎回来"><span class="site-name">欢迎回来</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">欢迎回来</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://blog.csdn.net/weixin_62647396?type=blog" target="_blank" title="CSDN"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/y_ma@siat.ac.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%80%BB%E7%BB%93/" title="创建线程的几种方式"><img class="post-bg" src="/img/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="创建线程的几种方式"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%80%BB%E7%BB%93/" title="创建线程的几种方式">创建线程的几种方式</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.282Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">面试官：“创建线程有哪几种常见的方式？”
-继承 Thread 类
-实现 Runnable 接口
-使用 Executor 框架
-使用 FutureTask
-
-最简单的两种方式1.继承 Thread 类2.实现 Runnable 接口比较实用的两种方式3.使用 Executor 框架Executor 框架是 Java5 之后引进的，在 Java 5 之后，通过 Executor 来启动线程比使用 Thread 的 start 方法更好，除了更易管理，效率更好（用线程池实现，节约开销）外，还有关键的一点：有助于避免 this 逃逸问题。
-
-补充：this 逃逸是指在构造函数返回之前其他线程就持有该对象的引用. 调用尚未构造完全的对象的方法可能引发令人疑惑的错误。
-
-Executor 框架不仅包括了线程池的管理，还提供了线程工厂、队列以及拒绝策略等，Executor 框架让并发编程变得更加简单。
-为了能搞懂如何使用 Executor 框架创建
-Executor 框架结构(主要由三大部分组成)1) 任务(Runnable &#x2F;Callable)执行任务需要实现的 Runnable 接口  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E6%80%BB%E7%BB%93/" title="并发容器总结"><img class="post-bg" src="/img/9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="并发容器总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E6%80%BB%E7%BB%93/" title="并发容器总结">并发容器总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.279Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">
-
-
-一 JDK 提供的并发容器总结
-二 ConcurrentHashMap
-三 CopyOnWriteArrayList
-3.1 CopyOnWriteArrayList 简介
-3.2 CopyOnWriteArrayList 是如何做到的？
-3.3 CopyOnWriteArrayList 读取和写入源码简单分析
-3.3.1 CopyOnWriteArrayList 读取操作的实现
-3.3.2 CopyOnWriteArrayList 写入操作的实现
-
-
-
-
-四 ConcurrentLinkedQueue
-五 BlockingQueue
-5.1 BlockingQueue 简单介绍
-5.2 ArrayBlockingQueue
-5.3 LinkedBlockingQueue
-5.4 PriorityBlockingQueue
-
-
-六 ConcurrentSkipListMap
-七 参考
-
-
-
-一 JDK 提供的并发容器总结JDK 提供的这些容器大部分在 java.util.concurrent 包中。
-
-ConcurrentHashMap: 线程安全的 HashMap
-CopyOn ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/ThreadLocal%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89/" title="Threadlocal学习"><img class="post-bg" src="/img/9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Threadlocal学习"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/ThreadLocal%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89/" title="Threadlocal学习">Threadlocal学习</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.277Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">ThreadLocal造成OOM内存溢出案例演示与原理分析
-深入理解 Java 之 ThreadLocal 工作原理
-ThreadLocalThreadLocal简介通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。如果想实现每一个线程都有自己的专属本地变量该如何解决呢？ JDK中提供的ThreadLocal类正是为了解决这样的问题。 ThreadLocal类主要解决的就是让每个线程绑定自己的值，可以将ThreadLocal类形象的比喻成存放数据的盒子，盒子中可以存储每个线程的私有数据。
-如果你创建了一个ThreadLocal变量，那么访问这个变量的每个线程都会有这个变量的本地副本，这也是ThreadLocal变量名的由来。他们可以使用 get（） 和 set（） 方法来获取默认值或将其值更改为当前线程所存的副本的值，从而避免了线程安全问题。
-再举个简单的例子： 
-比如有两个人去宝屋收集宝物，这两个共用一个袋子的话肯定会产生争执，但是给他们两个人每个人分配一个袋子的话就不会出现这样的问题。如果把这两个人比作线程的话，那么ThreadLocal就是用来这两个线程竞争的。
-Thr ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/synchronized%E5%9C%A8JDK1.6%E4%B9%8B%E5%90%8E%E7%9A%84%E5%BA%95%E5%B1%82%E4%BC%98%E5%8C%96/" title="synchronized底层优化"><img class="post-bg" src="/img/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="synchronized底层优化"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/synchronized%E5%9C%A8JDK1.6%E4%B9%8B%E5%90%8E%E7%9A%84%E5%BA%95%E5%B1%82%E4%BC%98%E5%8C%96/" title="synchronized底层优化">synchronized底层优化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.273Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">JDK1.6 对锁的实现引入了大量的优化来减少锁操作的开销，如: 偏向锁、轻量级锁、自旋锁、适应性自旋锁、锁消除、锁粗化 等等技术。
-锁主要存在四中状态，依次是：
-
-无锁状态
-偏向锁状态
-轻量级锁状态
-重量级锁状态
-
-锁🔐会随着竞争的激烈而逐渐升级。
-另外，需要注意：锁可以升级不可降级，即 无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁是单向的。 这种策略是为了提高获得锁和释放锁的效率。
-偏向锁引入偏向锁的目的和引入轻量级锁的目的很像，他们都是为了没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗。但是不同是：轻量级锁在无竞争的情况下使用 CAS 操作去代替使用互斥量。而偏向锁在无竞争的情况下会把整个同步都消除掉。
-偏向锁的“偏”就是偏心的偏，它的意思是会偏向于第一个获得它的线程，如果在接下来的执行中，该锁没有被其他线程获取，那么持有偏向锁的线程就不需要进行同步！（关于偏向锁的原理可以查看《深入理解Java虚拟机：JVM高级特性与最佳实践》第二版的13章第三节锁优化。）
-偏向锁的加锁当一个线程访问同步块并获取锁时, 会在锁对象的对象头和栈 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="线程学习"><img class="post-bg" src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程学习"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" title="线程学习">线程学习</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.271Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">
-一 使用线程池的好处
-二 Executor 框架
-2.1 简介
-2.2 Executor 框架结构(主要由三大部分组成)
-1) 任务(Runnable &#x2F;Callable)
-2) 任务的执行(Executor)
-3) 异步计算的结果(Future)
-
-
-2.3 Executor 框架的使用示意图
-
-
-三 (重要)ThreadPoolExecutor 类简单介绍
-3.1 ThreadPoolExecutor 类分析
-3.2 推荐使用 ThreadPoolExecutor 构造函数创建线程池
-
-
-四 (重要)ThreadPoolExecutor 使用示例
-4.1 示例代码:Runnable+ThreadPoolExecutor
-4.2 线程池原理分析
-4.3 几个常见的对比
-4.3.1 Runnable vs Callable
-4.3.2 execute() vs submit()
-4.3.3 shutdown()VSshutdownNow()
-4.3.2 isTerminated() VS isShutdown()
-
-
-4.4 加餐:Callable+ThreadPoolEx ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/Atomic%E5%8E%9F%E5%AD%90%E7%B1%BB%E6%80%BB%E7%BB%93/" title="原子类"><img class="post-bg" src="/img/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="原子类"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/Atomic%E5%8E%9F%E5%AD%90%E7%B1%BB%E6%80%BB%E7%BB%93/" title="原子类">原子类</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.268Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">
-
-
-1 Atomic 原子类介绍
-2 基本类型原子类
-2.1 基本类型原子类介绍
-2.2 AtomicInteger 常见方法使用
-2.3 基本数据类型原子类的优势
-2.4 AtomicInteger 线程安全原理简单分析
-
-
-3 数组类型原子类
-3.1 数组类型原子类介绍
-3.2 AtomicIntegerArray 常见方法使用
-
-
-4 引用类型原子类
-4.1  引用类型原子类介绍
-4.2 AtomicReference 类使用示例
-4.3 AtomicStampedReference 类使用示例
-4.4 AtomicMarkableReference 类使用示例
-
-
-5 对象的属性修改类型原子类
-5.1 对象的属性修改类型原子类介绍
-5.2 AtomicIntegerFieldUpdater 类使用示例
-
-
-
-
-
-1 Atomic 原子类介绍Atomic 翻译成中文是原子的意思。在化学上，我们知道原子是构成一般物质的最小单位，在化学反应中是不可分割的。在我们这里 Atomic 是指一个操作是不可中断的。即使是在多个线程一起执行的时候，一个操作一旦开始，就不会被其他线程干扰。
-所 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/AQS%E5%8E%9F%E7%90%86%E4%BB%A5%E5%8F%8AAQS%E5%90%8C%E6%AD%A5%E7%BB%84%E4%BB%B6%E6%80%BB%E7%BB%93/" title="AQS学习资料"><img class="post-bg" src="/img/3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AQS学习资料"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/AQS%E5%8E%9F%E7%90%86%E4%BB%A5%E5%8F%8AAQS%E5%90%8C%E6%AD%A5%E7%BB%84%E4%BB%B6%E6%80%BB%E7%BB%93/" title="AQS学习资料">AQS学习资料</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.265Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">
-1 AQS 简单介绍
-2 AQS 原理
-2.1 AQS 原理概览
-2.2 AQS 对资源的共享方式
-2.3 AQS 底层使用了模板方法模式
-
-
-3 Semaphore(信号量)-允许多个线程同时访问
-4 CountDownLatch （倒计时器）
-4.1 CountDownLatch 的三种典型用法
-4.2 CountDownLatch 的使用示例
-4.3 CountDownLatch 的不足
-4.4 CountDownLatch 常见面试题
-
-
-5 CyclicBarrier(循环栅栏)
-5.1 CyclicBarrier 的应用场景
-5.2 CyclicBarrier 的使用示例
-5.3 CyclicBarrier源码分析
-5.4 CyclicBarrier 和 CountDownLatch 的区别
-
-
-6 ReentrantLock 和 ReentrantReadWriteLock
-参考
-公众号
-
-
-
-
-常见问题：AQS 原理？;CountDownLatch 和 CyclicBarrier 了解吗,两者的区别是什么？用过 Semaphore 吗？
-
-1 AQS 简单介绍AQS  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/2020%E6%9C%80%E6%96%B0Java%E5%B9%B6%E5%8F%91%E8%BF%9B%E9%98%B6%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/" title="并发面试总结-进阶"><img class="post-bg" src="/img/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="并发面试总结-进阶"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/2020%E6%9C%80%E6%96%B0Java%E5%B9%B6%E5%8F%91%E8%BF%9B%E9%98%B6%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/" title="并发面试总结-进阶">并发面试总结-进阶</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.263Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="content">
-Java 并发进阶常见面试题总结
-1.synchronized 关键字
-1.1.说一说自己对于 synchronized 关键字的了解
-1.2. 说说自己是怎么使用 synchronized 关键字
-1.3. 构造方法可以使用 synchronized 关键字修饰么？
-1.3. 讲一下 synchronized 关键字的底层原理
-1.3.1. synchronized 同步语句块的情况
-1.3.2. synchronized 修饰方法的的情况
-1.3.3.总结
-
-
-1.4. 说说 JDK1.6 之后的 synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗
-1.5. 谈谈 synchronized 和 ReentrantLock 的区别
-1.5.1. 两者都是可重入锁
-1.5.2.synchronized 依赖于 JVM 而 ReentrantLock 依赖于 API
-1.5.3.ReentrantLock 比 synchronized 增加了一些高级功能
-
-
-
-
-2. volatile 关键字
-2.1. CPU 缓存模型
-2.2. 讲一下 JMM(Java 内 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/2020%E6%9C%80%E6%96%B0Java%E5%B9%B6%E5%8F%91%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/" title="并发面试总结"><img class="post-bg" src="/img/10.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="并发面试总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/2020%E6%9C%80%E6%96%B0Java%E5%B9%B6%E5%8F%91%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/" title="并发面试总结">并发面试总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.261Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="content">
-
-
-Java 并发基础常见面试题总结
-1. 什么是线程和进程?
-1.1. 何为进程?
-1.2. 何为线程?
-
-
-2. 请简要描述线程与进程的关系,区别及优缺点？
-2.1. 图解进程和线程的关系
-2.2. 程序计数器为什么是私有的?
-2.3. 虚拟机栈和本地方法栈为什么是私有的?
-2.4. 一句话简单了解堆和方法区
-
-
-3. 说说并发与并行的区别?
-4. 为什么要使用多线程呢?
-5. 使用多线程可能带来什么问题?
-6. 说说线程的生命周期和状态?
-7. 什么是上下文切换?
-8. 什么是线程死锁?如何避免死锁?
-8.1. 认识线程死锁
-8.2. 如何避免线程死锁?
-
-
-9. 说说 sleep() 方法和 wait() 方法区别和共同点?
-10. 为什么我们调用 start() 方法时会执行 run() 方法，为什么我们不能直接调用 run() 方法？
-公众号
-
-
-
-
-
-Java 并发基础常见面试题总结1. 什么是线程和进程?1.1. 何为进程?进程是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。
-在 Java 中，当 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/04/19/%E9%94%81%E5%8D%87%E7%BA%A7%E8%BF%87%E7%A8%8B/" title="锁升级过程">锁升级过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-19T12:04:23.479Z" title="发表于 2024-04-19 20:04:23">2024-04-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a></span></div><div class="content">假如我们现在有一百个线程，商品A库存量为100，售出方法为sale()
-在没有上锁是，即时我们设置当库存量为零时停止售卖，但是也极有可能出现超卖的情况，这是由于我们售卖的方法没有原子性，在售出的过程中，库存为零时，其他线程可能刚好调用方法，这时条件没有更改，所以是无法及时停止的。
-synchronized关键字        使sale()方法一次最多服务一个线程，这样就解决了超卖的问题，此时涉及到锁升级过程
-初始状态，线程A发过来请求，请求获取锁，此时sale()的对象锁处于空闲状态，获取成功，对象锁的对象头部分包含markword，用于记录当前获取锁的线程，此时为偏向锁，获取成功之后执行sql语句。
-
- 线程A此时还在使用 sale()方法，也就是仍然占有这个锁，此时线程B过来了，也想要执行这个方法，那也需要获取这个锁，此时线程B将自己的线程ID与markword中记录的id进行对比，发现不同，那么锁升级为轻量级锁，线程B在旁边不断地CAS自旋尝试获取锁。
-
-CAS不断地自旋其实是很消耗资源的，当线程B多次CAS仍然无法获取到锁的话，此时锁升级为重量级锁，线程B进入阻塞队列沉睡，等 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/yatou.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">一日三餐</div><div class="author-info__description">我的日常积累</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>前往个人信息</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://blog.csdn.net/weixin_62647396?type=blog" target="_blank" title="CSDN"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/y_ma@siat.ac.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By 一日三餐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/yatou.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s2.loli.net/2024/04/21/M9qDXPUflRcbKAw.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="欢迎回来"><span class="site-name">欢迎回来</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">欢迎回来</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://blog.csdn.net/weixin_62647396?type=blog" target="_blank" title="CSDN"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/y_ma@siat.ac.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/21/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" title="快排"><img class="post-bg" src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="快排"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" title="快排">快排</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T11:44:46.187Z" title="发表于 2024-04-21 19:44:46">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F/">八大排序</a></span></div><div class="content">找到待排序数组的第一个数，作为基准数，让后边的j向前移动去找到比当前基准小的数，然后，让前边的i找到比基准数大的数，找到后停下，如果i，j没有相遇，然后交换
+相遇之后让基准数和相遇的位置交换
+此时基准数已经排好序了以基准数为中心拆分左右部分
+
+1234567891011121314151617181920212223public static void quicksort3(int [] arr,int left,int right) &#123;if(left&gt;=right) &#123;    return;&#125;i=left;j=right;int base=arr[left];while(i!=j) &#123;    while(arr[j]&gt;=base&amp;&amp;i&lt;j) &#123;        j--;    &#125;    while(arr[i]&lt;=base&amp;&amp;i&lt;j) &#123;        i++;    &#125;    int temp=arr[i];    arr[i]=arr[j]; ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/21/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/" title="插入排序"><img class="post-bg" src="/img/11.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="插入排序"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/" title="插入排序">插入排序</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T11:41:29.144Z" title="发表于 2024-04-21 19:41:29">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F/">八大排序</a></span></div><div class="content">
+
+1234567891011for(int i=1;i&lt;arr.length;i++) &#123;            int temp=arr[i];            for(int j=i-1;j&gt;=0;j--) &#123;                if(arr[j]&gt;arr[j+1]) &#123;                    temp=arr[j];                    arr[j]=arr[j+1];                    arr[j+1]=temp;                &#125;                else                    break;            &#125;
+
+</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/21/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="冒泡排序"><img class="post-bg" src="/img/9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="冒泡排序"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="冒泡排序">冒泡排序</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T09:49:07.735Z" title="发表于 2024-04-21 17:49:07">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%85%AB%E5%A4%A7%E6%8E%92%E5%BA%8F/">八大排序</a></span></div><div class="content"> 前后两两进行对比
+ i和i加一，走数组长度轮一定变得有序
+时间复杂度	n^2
+
+123456789for(int i=0;i&lt;arr.length;i++) &#123;    for(int j=0;j&lt;arr.length-1;j++) &#123;                if(arr[j]&gt;arr[j+1]) &#123;                    int temp=arr[j];                    arr[j]=arr[j+1];                    arr[j+1]=temp;                &#125;            &#125;        &#125;
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络学习"><img class="post-bg" src="/img/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机网络学习"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络学习">计算机网络学习</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T08:02:32.014Z" title="发表于 2024-04-21 16:02:32">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="content">
+TCP 基本认识#TCP 头格式有哪些？我们先来看看 TCP 头的格式，标注颜色的表示与本文关联比较大的字段，其他字段不做详细阐述。
+
+序列号：在建立连接时由计算机生成的随机数作为其初始值，通过 SYN 包传给接收端主机，每发送一次数据，就「累加」一次该「数据字节数」的大小。用来解决网络包乱序问题。
+确认应答号：指下一次「期望」收到的数据的序列号，发送端收到这个确认应答以后可以认为在这个序号以前的数据都已经被正常接收。用来解决丢包的问题。
+控制位：
+
+ACK：该位为 1 时，「确认应答」的字段变为有效，TCP 规定除了最初建立连接时的 SYN 包之外该位必须设置为 1 。
+RST：该位为 1 时，表示 TCP 连接中出现异常必须强制断开连接。
+SYN：该位为 1 时，表示希望建立连接，并在其「序列号」的字段进行序列号初始值的设定。
+FIN：该位为 1 时，表示今后不会再有数据发送，希望断开连接。当通信结束希望断开连接时，通信双方的主机之间就可以相互交换 FIN 位为 1 的 TCP 段。
+
+#为什么需要 TCP 协议？ TCP 工作在哪一层？IP 层是「不可靠」的，它不保证网络包的交 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/21/%E4%BA%8C%E5%8F%89%E6%A0%91/" title="二叉树"><img class="post-bg" src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二叉树"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E4%BA%8C%E5%8F%89%E6%A0%91/" title="二叉树">二叉树</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T07:50:26.310Z" title="发表于 2024-04-21 15:50:26">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java%E5%9F%BA%E7%A1%80/">java基础</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/java%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><div class="content">平衡二叉树
+1.左节点小于当前节点，右边节点大于当前节点
+2.左右两颗子树高度差绝对值小等于一
+四种旋转
+LL
+当一插入，不平衡，那么一是造成不平衡的节点，5是不平衡节点
+​    
+LR
+当四插入 ，不平衡，走两步，先让3.4旋转，三大于四，所以三在左，然后变成ll型旋转
+​    
+RR
+10插入，不平衡，10插入造成5不平衡，5向10走两步，所以为RR
+​    
+RL
+7插入导致5不平衡，走两步RL，
+​    
+红黑树
+2-3-4树
+二节点：分出两个叉，记录一个数值
+​    
+三节点：分出三个叉，记录两个数值
+​    
+四节点：分出四个叉，记录三个数值
+​    
+1.每个节点不是黑色就是红色
+2.根节点永远为黑
+3.叶子节点都是黑色，值都为null
+4.一个节点为红色，子节点一定是黑色
+5.根节点到任意一个叶子节点上黑色节点数目相同
+​    
+​    
+​    
+多叉树
+（磁盘采用多叉树存储）
+CPU，内存，磁盘关系
+磁盘：使用链式存储
+内存：使用连续存储，主要作用速度快，顺序查找速度快
+
+
+B树
+一个节点包含多个key值和value值
+key:主键
+value： ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/21/%E9%9D%A2%E8%AF%95/" title="合集"><img class="post-bg" src="/img/10.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合集"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/%E9%9D%A2%E8%AF%95/" title="合集">合集</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T06:36:35.270Z" title="发表于 2024-04-21 14:36:35">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BF%A1%E6%81%AF/">信息</a></span></div><div class="content">
+  fb877ae659773ab0be10242b840a128e6b2f82e5f5d1476a094021dfaad349f456492c9727bf3bfc0f9093c8fe7be94a0ed2e6ec7912ca914c2c66dd9d4c62a75f88419617be3894acfb95c09b139451bcd95a11d075a2bd782cbf1227cfe87a45c21ffd472eff2a141d17ef5213cc7568a65d98e0e62340b8db51e3b738cbec289d5b64433174ba6905f5afe20aaa79ad933d938ae55da6d35757c10a56cf98532062e74a1857dc65b4526d924b4fcb54a65742b0fe5e454843ca01469a5ffe142f29657acbaf57abff0ba9e2d13819fb502730f1d061b8f63d7c96088dfdb402a3d4cb3304431ef4911c17d8af63561418605f0a7058d79 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/21/jvm%E5%BA%95%E5%B1%82/" title="jvm底层原理"><img class="post-bg" src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="jvm底层原理"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/21/jvm%E5%BA%95%E5%B1%82/" title="jvm底层原理">jvm底层原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-21T06:31:00.113Z" title="发表于 2024-04-21 14:31:00">2024-04-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/jvm/">jvm</a></span></div><div class="content">
+jvm 如何管理空间？
+运行时数据区域
+独享
+pc：一个非常小的内存空间，用来保存程序执行到的位置（线程私有），它可以看作是当前线程所执行的字节码的行号指示器
+
+虚拟机栈：栈内存主要是存放一些基本类型的变量和对象的引用变量。最典型的就是我们new一个对象时，对象名作为变量就存放在栈内存中栈内存有一个很重要的特殊性——在栈中的数据可以共享（已存在的值不会再次创建）int a &#x3D; 3;int b &#x3D; 3；(编译器先处理int a &#x3D;3；首先它会在栈中创建一个变量为a的引用，然后查找栈中是否有3这个值，如果没找到，就将3存放进来，然后将a指向3。接着处理int b)每个方法执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、操作数栈、动态链接、方法出口等。局部变量表存放了编译器可知的各种基本数据类型、对象引用和returnAddress类型每个方法从调用直至完成的过程，都对应着一个栈帧从入栈到出栈的过程。每当一个方法执行完成时，该栈帧就会弹出栈帧的元素作为这个方法的返回值，并且清除这个栈帧，Java栈的栈顶的栈帧就是当前正在执行的活动栈，也 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3ThreadLocal%E5%85%B3%E9%94%AE%E5%AD%97/" title="Threadlocal关键字详解"><img class="post-bg" src="/img/16.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Threadlocal关键字详解"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/%E4%B8%87%E5%AD%97%E8%AF%A6%E8%A7%A3ThreadLocal%E5%85%B3%E9%94%AE%E5%AD%97/" title="Threadlocal关键字详解">Threadlocal关键字详解</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.288Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">前言
+全文共10000+字，31张图，这篇文章同样耗费了不少的时间和精力才创作完成，原创不易，请大家点点关注+在看，感谢。
+对于ThreadLocal，大家的第一反应可能是很简单呀，线程的变量副本，每个线程隔离。那这里有几个问题大家可以思考一下：
+
+ThreadLocal的key是弱引用，那么在 ThreadLocal.get()的时候,发生GC之后，key是否为null？
+ThreadLocal中ThreadLocalMap的数据结构？
+ThreadLocalMap的Hash算法？
+ThreadLocalMap中Hash冲突如何解决？
+ThreadLocalMap的扩容机制？
+ThreadLocalMap中过期key的清理机制？探测式清理和启发式清理流程？
+ThreadLocalMap.set()方法实现原理？
+ThreadLocalMap.get()方法实现原理？
+项目中ThreadLocal使用情况？遇到的坑？
+……
+
+上述的一些问题你是否都已经掌握的很清楚了呢？本文将围绕这些问题使用图文方式来剖析ThreadLocal的点点滴滴。
+目录注明： 本文源码基于JDK 1.8
+Thr ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2024/04/20/%E6%8B%BF%E6%9D%A5%E5%8D%B3%E7%94%A8%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="线程池实践"><img class="post-bg" src="/img/17.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池实践"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/%E6%8B%BF%E6%9D%A5%E5%8D%B3%E7%94%A8%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="线程池实践">线程池实践</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.286Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">线程池最佳实践这篇文章篇幅虽短，但是绝对是干货。标题稍微有点夸张，嘿嘿，实际都是自己使用线程池的时候总结的一些个人感觉比较重要的点。
+线程池知识回顾开始这篇文章之前还是简单介绍一嘴线程池，之前写的《新手也能看懂的线程池学习总结》这篇文章介绍的很详细了。
+为什么要使用线程池？
+池化技术相比大家已经屡见不鲜了，线程池、数据库连接池、Http 连接池等等都是对这个思想的应用。池化技术的思想主要是为了减少每次获取资源的消耗，提高对资源的利用率。
+
+线程池提供了一种限制和管理资源（包括执行一个任务）。 每个线程池还维护一些基本统计信息，例如已完成任务的数量。
+这里借用《Java 并发编程的艺术》提到的来说一下使用线程池的好处：
+
+降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+提高响应速度。当任务到达时，任务可以不需要的等到线程创建就能立即执行。
+提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
+
+线程池在实际项目的使用场景线程池一般用于执行多个不相关联的耗时任务，没有多线程的情况下， ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2024/04/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" title="多线程学习指南"><img class="post-bg" src="/img/14.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="多线程学习指南"></a></div><div class="recent-post-info"><a class="article-title" href="/2024/04/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" title="多线程学习指南">多线程学习指南</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-04-20T08:30:08.284Z" title="发表于 2024-04-20 16:30:08">2024-04-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a></span></div><div class="content">前言这是我的第二篇专门介绍如何去学习某个知识点的文章，在上一篇《写给 Java 程序员看的算法学习指南！》 的文章中，我推荐了一些关于 算法学习的书籍以及资源 。
+相比于写技术文章来说，写这种这种类型的文章实际花费的时间可能会稍微少一点。但是，这种学习指南形式的文章，我想对于 Java 初学者甚至是工作几年的 Java 工程师来说应该还是非常有帮助的！
+我们都知道多线程应该是大部分 Java 程序员最难啃的一块骨头之一，这部分内容的难度跨度大，难实践，并且市面上的参考资料的质量也层次不齐。
+在这篇文章中，我会首先介绍一下 Java 多线程学习 中比较重要的一些问题，然后还会推荐一些比较不错的学习资源供大家参考。希望对你们学习多线程相关的知识能有帮助。以下介绍的很多知识点你都可以在这里找到：https://snailclimb.gitee.io/javaguide/#/?id=并发
+
+另外，我还将本文的内容同步到了 Github 上，点击阅读原文即可直达。如果你觉得有任何需要完善和修改的地方，都可以去 Github 给我提交 Issue 或者 PR（推荐）。
+一.Java 多线程知识点总 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><a class="page-number" href="/page/4/#content-inner">4</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/yatou.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">一日三餐</div><div class="author-info__description">我的日常积累</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>前往个人信息</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://blog.csdn.net/weixin_62647396?type=blog" target="_blank" title="CSDN"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/y_ma@siat.ac.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By 一日三餐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
   init: (str) => {
     window.typed = new Typed('#subtitle', Object.assign({
       strings: str,
